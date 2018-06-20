@@ -47,9 +47,9 @@ $("#start").click(function(){
 
 
   function getpostcompleted(result){
-		if(result.response.length != 0){
+		if(result.response.length !== 0){
 			console.log(result)
-    if (result.response[0].attachments.length != 0){
+    if (result.response[0].attachments.length !== 0){
       for (var a = 0; a < result.response[0].attachments.length; a++){
         if (result.response[0].attachments[a].type == "poll"){
           var poll_object_id = a;
