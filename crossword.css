@@ -1,0 +1,33 @@
+table:1 {
+  width: 90px;
+  border: 2px solid black;
+  text-align: center;
+  margin-bottom: 5px;
+}
+input {
+  height:30px;
+  width: 30px;
+  text-align: center;
+}
+footer {
+	margin-top: 10px;
+}
+
+a {
+	line-height: 1.5em;
+}
+h2 {
+	font-weight: 400
+}
+h3 {
+	font-weight: 400
+}
+h4 {
+	font-weight: 400
+}
+h5 {
+	font-weight: 400
+}
+#img {
+	margin-left: 80%;
+}
