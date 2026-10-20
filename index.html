@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090a0a" />
+  <meta name="description" content="О!Лигарх by Островок — роскошный отдых за пределами разумного. Шуточный премиум-лендинг." />
+  <title>О!Лигарх — Отдых за пределами разумного</title>
+  <style>
+    :root { color-scheme:dark; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:#090a0a; }
+    #oligarch{--gold:#d4ae65;--gold2:#fae2aa;--muted:#99938a;--line:#3d3529;--bg:#090a0a;--panel:#151512;color:#f5f0e6;background:var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;overflow:hidden;min-height:100vh}
+    #oligarch *{box-sizing:border-box}
+    #oligarch button,#oligarch input,#oligarch select{font:inherit}
+    #oligarch button{cursor:pointer}
+    #oligarch .wrap{width:min(1200px,calc(100% - 64px));margin:auto}
+    #oligarch .gold{color:var(--gold)}
+    #oligarch .upper{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:var(--gold)}
+    #oligarch .nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #25231e;gap:20px}
+    #oligarch .brand{display:flex;align-items:center;gap:15px;white-space:nowrap}
+    #oligarch .brandmark{font-family:Georgia,serif;font-size:34px;font-weight:700;color:var(--gold);letter-spacing:-5px}
+    #oligarch .brandname{font-size:20px;font-weight:800;letter-spacing:-1px}
+    #oligarch .brandcaption{font-size:9px;letter-spacing:1.1px;color:#8e887d;text-transform:uppercase}
+    #oligarch .navlinks{display:flex;gap:25px}
+    #oligarch .navlinks a{color:#b6aea0;text-decoration:none;font-size:12px;transition:color .2s}
+    #oligarch .navlinks a:hover{color:var(--gold)}
+    #oligarch .outlinebtn{background:transparent;border:1px solid #6b593b;color:var(--gold2);border-radius:3px;padding:11px 17px;font-size:11px;font-weight:700}
+    #oligarch .outlinebtn:hover{background:#282113}
+    #oligarch .hero{display:grid;grid-template-columns:1.12fr .88fr;min-height:605px;position:relative}
+    #oligarch .hero-left{z-index:2;padding:79px 0 70px;position:relative}
+    #oligarch .hero h1{font-family:Georgia,serif;font-size:clamp(58px,7.4vw,105px);font-weight:400;line-height:.99;letter-spacing:-5px;margin:28px 0 26px}
+    #oligarch .hero h1 em{font-style:italic;color:var(--gold)}
+    #oligarch .hero-copy{font-size:16px;line-height:1.8;color:#c4bdb2;max-width:430px;margin-bottom:30px}
+    #oligarch .goldbtn{border:1px solid #e6c67c;background:linear-gradient(125deg,#f1d797 0%,#c8a052 58%,#ae863b 100%);color:#1c170c;padding:16px 22px;border-radius:3px;font-size:12px;font-weight:800;display:inline-flex;gap:25px;align-items:center;justify-content:space-between;transition:transform .2s,filter .2s}
+    #oligarch .goldbtn:hover{transform:translateY(-2px);filter:brightness(1.09)}
+    #oligarch .hero-note{display:flex;gap:11px;align-items:center;font-size:10px;color:#898277;margin-top:21px}
+    #oligarch .hero-note i{width:20px;height:1px;background:var(--gold);display:block}
+    #oligarch .hero-visual{position:relative;background:linear-gradient(90deg,#090a0a 0%,transparent 34%),linear-gradient(0deg,#090a0a 0%,transparent 45%),url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=85') center center/cover}
+    #oligarch .hero-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#090a0a 0%,transparent 45%),linear-gradient(0deg,#090a0a 0%,transparent 50%)}
+    #oligarch .seal{position:absolute;z-index:2;right:25px;top:52px;width:117px;height:117px;border:1px solid #d4ae6588;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#100e0bb3;backdrop-filter:blur(8px);transform:rotate(12deg)}
+    #oligarch .seal b{font-family:Georgia,serif;font-size:32px;color:var(--gold);line-height:1}
+    #oligarch .seal small{font-size:8px;letter-spacing:1.8px;color:#e4cd9a;margin-top:8px}
+    #oligarch .visual-label{position:absolute;z-index:2;bottom:68px;right:12px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#dbc99f}
+    #oligarch .visual-label span{display:block;font-family:Georgia,serif;font-style:italic;font-size:23px;text-transform:none;letter-spacing:0;margin-bottom:5px}
+    #oligarch .search-shell{margin-top:-5px;position:relative;z-index:3}
+    #oligarch .search{border:1px solid #6c5531;background:linear-gradient(120deg,#252016,#151512 75%);padding:23px;box-shadow:0 22px 55px #0006}
+    #oligarch .search-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px;gap:14px}
+    #oligarch .search-heading strong{font-family:Georgia,serif;font-weight:400;font-size:23px}
+    #oligarch .search-heading span{font-size:10px;color:#a9a08e}
+    #oligarch .fields{display:grid;grid-template-columns:2fr 1.15fr 1.15fr 1.25fr auto;gap:8px}
+    #oligarch .field{min-width:0;background:#100f0d;border:1px solid #4a4131;padding:9px 12px;display:flex;flex-direction:column;gap:4px}
+    #oligarch .field label{font-size:9px;color:var(--gold);letter-spacing:1.3px;text-transform:uppercase}
+    #oligarch .field input,#oligarch .field select{width:100%;background:transparent;border:0;outline:none;color:#eee4d2;font-size:12px;min-height:23px;color-scheme:dark}
+    #oligarch .field select option{background:#171611}
+    #oligarch .searchbtn{padding:0 23px}
+    #oligarch .trust{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #393229;margin-top:43px;margin-bottom:85px}
+    #oligarch .trust-item{padding:0 18px 26px;text-align:center;border-right:1px solid #332d24}
+    #oligarch .trust-item:last-child{border:0}
+    #oligarch .trust-item b{font-size:36px;font-family:Georgia,serif;font-weight:400;color:#e4c079}
+    #oligarch .trust-item p{font-size:11px;color:#9f988d;margin:5px 0}
+    #oligarch .section-head{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-bottom:28px}
+    #oligarch h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(32px,4.3vw,55px);line-height:1.12;letter-spacing:-1px;margin:12px 0 0}
+    #oligarch .section-sub{font-size:12px;color:#aca397;max-width:300px}
+    #oligarch .collection{padding-bottom:85px}
+    #oligarch .hotels{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+    #oligarch .hotel{background:#151512;border:1px solid #3b3428;overflow:hidden;transition:border-color .2s,transform .2s;min-width:0}
+    #oligarch .hotel:hover{border-color:#aa8647;transform:translateY(-3px)}
+    #oligarch .hotel-photo{height:215px;background-size:cover;background-position:center;position:relative}
+    #oligarch .hotel-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0a0a09c7,transparent 65%)}
+    #oligarch .hotel-tag{position:absolute;left:15px;top:14px;z-index:1;background:#0a0a09e6;border:1px solid #93723e;color:#e7c680;font-size:9px;letter-spacing:1.2px;padding:7px 10px;text-transform:uppercase}
+    #oligarch .hotel-num{position:absolute;bottom:12px;right:16px;z-index:1;font-family:Georgia,serif;font-size:21px;color:#e5c684}
+    #oligarch .hotel-body{padding:21px}
+    #oligarch .hotel-loc{font-size:9px;color:#a8936d;text-transform:uppercase;letter-spacing:1.8px}
+    #oligarch .hotel-body h3{font-family:Georgia,serif;font-weight:400;font-size:24px;line-height:1.15;margin:10px 0}
+    #oligarch .hotel-body p{font-size:11px;color:#a8a093;line-height:1.7;min-height:54px;margin:0}
+    #oligarch .hotel-bottom{border-top:1px solid #352f25;margin-top:17px;padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+    #oligarch .hotel-bottom small{display:block;color:#90877a;font-size:9px}
+    #oligarch .hotel-bottom b{font-size:17px;color:#e2be74;font-family:Georgia,serif;font-weight:400}
+    #oligarch .arrowbtn{border:1px solid #967443;background:transparent;color:#e4c17a;width:35px;height:35px;font-size:20px}
+    #oligarch .arrowbtn:hover{background:#d4ae65;color:#100f0c}
+    #oligarch .benefits-section{background:radial-gradient(ellipse at 100% 0%,#342916aa,transparent 54%),#141310;border-top:1px solid #403625;border-bottom:1px solid #403625;padding:78px 0}
+    #oligarch .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:35px;margin-top:38px}
+    #oligarch .benefit{padding-top:22px;border-top:1px solid #76603a}
+    #oligarch .benefit-icon{font-family:Georgia,serif;font-size:35px;color:#d9b770}
+    #oligarch .benefit h3{font-family:Georgia,serif;font-size:23px;font-weight:400;margin:17px 0 9px}
+    #oligarch .benefit p{font-size:12px;line-height:1.8;color:#ada394;margin:0}
+    #oligarch .quote-section{padding:85px 0;text-align:center}
+    #oligarch .quote-symbol{font-family:Georgia,serif;font-size:70px;color:#8d6d36;line-height:.65}
+    #oligarch blockquote{font-family:Georgia,serif;font-size:clamp(23px,3.6vw,42px);line-height:1.3;font-style:italic;max-width:820px;margin:20px auto;letter-spacing:-.7px}
+    #oligarch .quote-credit{font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:#bb9a5e}
+    #oligarch .membership{padding:58px 0 95px;background:radial-gradient(ellipse at 50% 70%,#3a2b1540,transparent 65%)}
+    #oligarch .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:34px;align-items:stretch}
+    #oligarch .plan{border:1px solid #4d402d;background:#151410;padding:27px 22px;position:relative;display:flex;flex-direction:column;gap:12px}
+    #oligarch .plan.featured{background:linear-gradient(145deg,#2d2619,#15140f 70%);border-color:#d5ad5a}
+    #oligarch .ribbon{position:absolute;right:0;top:0;background:#d2ab60;color:#17120a;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:8px 10px}
+    #oligarch .plan .tier{color:#c5aa75;text-transform:uppercase;font-size:10px;letter-spacing:2px}
+    #oligarch .plan h3{font-family:Georgia,serif;font-size:27px;font-weight:400;margin:0}
+    #oligarch .plan .price{font-family:Georgia,serif;font-size:30px;color:#e5c782;margin:7px 0}
+    #oligarch .plan .price span{font:10px Inter,sans-serif;color:#aaa092;letter-spacing:0}
+    #oligarch .plan ul{list-style:none;margin:0 0 10px;padding:0;flex:1}
+    #oligarch .plan li{font-size:11px;color:#c5bbab;margin:11px 0;display:flex;gap:10px}
+    #oligarch .plan li:before{content:"✦";color:#b9954f}
+    #oligarch .plan button{width:100%;padding:12px;font-size:11px;border:1px solid #967b4c;color:#e7c889;background:transparent}
+    #oligarch .plan.featured button{background:#d4ad65;color:#181309;font-weight:800}
+    #oligarch .plan button:hover{filter:brightness(1.2)}
+    #oligarch .bottom-cta{text-align:center;border-top:1px solid #57452a;border-bottom:1px solid #57452a;background:radial-gradient(ellipse at center,#3d2d14aa,#11110f 65%);padding:85px 24px}
+    #oligarch .bottom-cta h2{font-size:clamp(42px,6vw,75px);margin:18px 0}
+    #oligarch .bottom-cta p{font-size:13px;color:#c5b9a3;margin:0 auto 27px;max-width:440px}
+    #oligarch footer{padding:35px 0;display:flex;justify-content:space-between;gap:20px;align-items:center}
+    #oligarch .footnote{font-size:10px;color:#8d867b;max-width:540px}
+    #oligarch .footbrand{font-family:Georgia,serif;font-size:22px;color:#cfaa61}
+    #oligarch .modal-backdrop{position:fixed;z-index:10000;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+    #oligarch .modal-backdrop.visible{display:flex}
+    #oligarch .modal{background:linear-gradient(145deg,#292216,#12110f);border:1px solid #bf9754;box-shadow:0 25px 100px #000b;width:min(460px,100%);padding:38px 33px;position:relative}
+    #oligarch .modal h3{font:36px/1.1 Georgia,serif;margin:15px 0;color:#f4e4c4}
+    #oligarch .modal p{font-size:13px;color:#c8bda8;line-height:1.8;margin-bottom:23px}
+    #oligarch .close{position:absolute;top:10px;right:13px;background:transparent;border:0;color:#b69d72;font-size:26px}
+    #oligarch .toast{position:fixed;z-index:10001;bottom:25px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:14px 21px;background:#e3c583;color:#1a150b;border:1px solid #f9e4b3;font-size:12px;font-weight:600;max-width:90%;text-align:center;box-shadow:0 15px 45px #0008;transition:opacity .25s,transform .25s}
+    #oligarch .toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:980px){#oligarch .navlinks{display:none}#oligarch .hero h1{letter-spacing:-3px}#oligarch .fields{grid-template-columns:repeat(4,1fr)}#oligarch .fields .field:first-child{grid-column:span 2}#oligarch .searchbtn{grid-column:span 2;min-height:46px}#oligarch .hotel-body h3{font-size:21px}}
+    @media(max-width:700px){#oligarch .wrap{width:min(100% - 32px,1200px)}#oligarch .nav{height:70px}#oligarch .brandname{font-size:16px}#oligarch .brandmark{font-size:29px}#oligarch .brandcaption{font-size:7px}#oligarch .outlinebtn{font-size:9px;padding:9px}#oligarch .hero{display:flex;min-height:660px;flex-direction:column}#oligarch .hero-visual{position:absolute;inset:0 0 0 10%;background-position:63% center;opacity:.56}#oligarch .hero-visual:after{background:linear-gradient(90deg,#090a0a 0%,#090a0a66 65%),linear-gradient(0deg,#090a0a 0%,transparent 70%)}#oligarch .hero-left{padding:130px 0 50px}#oligarch .hero h1{font-size:clamp(65px,13vw,94px)}#oligarch .hero-copy{max-width:360px;color:#e0d8cc}#oligarch .seal{top:18px;right:7px;transform:scale(.7) rotate(12deg);transform-origin:top right}#oligarch .visual-label{display:none}#oligarch .fields{grid-template-columns:1fr 1fr}#oligarch .fields .field:first-child{grid-column:span 2}#oligarch .searchbtn{grid-column:span 2;min-height:52px}#oligarch .search-heading span{display:none}#oligarch .search{padding:16px}#oligarch .trust{margin:35px 0 65px}#oligarch .trust-item{padding:0 7px 20px}#oligarch .trust-item b{font-size:27px}#oligarch .trust-item p{font-size:9px}#oligarch .hotels,#oligarch .benefits,#oligarch .plans{grid-template-columns:1fr}#oligarch .hotel-photo{height:235px}#oligarch .hotel-body p{min-height:0}#oligarch .collection{padding-bottom:65px}#oligarch .section-head{display:block}#oligarch .benefits-section{padding:65px 0}#oligarch .benefits{gap:27px}#oligarch .quote-section{padding:75px 0}#oligarch .membership{padding-bottom:75px}#oligarch .plans{gap:14px}#oligarch footer{align-items:start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#oligarch *{transition:none!important}}
+  </style>
+</head>
+<body>
+<div id="oligarch">
+  <div class="wrap">
+    <header class="nav">
+      <div class="brand">
+        <div class="brandmark">О!</div>
+        <div><div class="brandname">ЛИГАРХ</div><div class="brandcaption">by Островок · Private Collection</div></div>
+      </div>
+      <nav class="navlinks" aria-label="Навигация"><a href="#ol-collection">Резиденции</a><a href="#ol-privileges">Привилегии</a><a href="#ol-club">Закрытый клуб</a></nav>
+      <button class="outlinebtn" data-modal="access">Личный кабинет ↗</button>
+    </header>
+    <section class="hero">
+      <div class="hero-left">
+        <div class="upper">✦ Островок представляет · Excessive Luxury Edition</div>
+        <h1>Деньги<br>любят <em>тишь.</em><br>Мы —<br><em>роскошь.</em></h1>
+        <p class="hero-copy">Отели для тех, кто привык к прекрасному. И к тому, что прекрасное привыкло к ним.</p>
+        <button class="goldbtn" data-scroll="#ol-search">НАЙТИ СВОЮ РЕЗИДЕНЦИЮ <span>↗</span></button>
+        <div class="hero-note"><i></i> Бюджетные варианты мы деликатно скрыли.</div>
+      </div>
+      <div class="hero-visual" role="img" aria-label="Роскошный курорт"><div class="seal"><b>О!</b><small>VERY VERY<br>IMPORTANT</small></div><div class="visual-label"><span>Luxury is a mindset.</span>Но пентхаус не помешает</div></div>
+    </section>
+    <div class="search-shell" id="ol-search"><div class="search">
+      <div class="search-heading"><strong>Куда изволите?</strong><span>Весь мир. Кроме мест, где вас не знают.</span></div>
+      <div class="fields">
+        <div class="field"><label for="ol-destination">Направление</label><select id="ol-destination"><option value="all">Куда угодно. Удивите меня.</option><option value="monaco">Монако</option><option value="maldives">Мальдивы</option><option value="dubai">Дубай</option></select></div>
+        <div class="field"><label for="ol-in">Заселение</label><input id="ol-in" type="date"></div>
+        <div class="field"><label for="ol-out">Выселение</label><input id="ol-out" type="date"></div>
+        <div class="field"><label for="ol-guests">Гости</label><select id="ol-guests"><option>1 персона</option><option selected>2 персоны</option><option>Вся свита</option></select></div>
+        <button class="goldbtn searchbtn" id="ol-search-button">ИСКАТЬ ↗</button>
+      </div>
+    </div></div>
+    <section class="trust"><div class="trust-item"><b>∞</b><p>Уровень вашей исключительности</p></div><div class="trust-item"><b>0</b><p>Причин смотреть на цену</p></div><div class="trust-item"><b>24/7</b><p>Время, когда вы правы</p></div></section>
+    <section class="collection" id="ol-collection">
+      <div class="section-head"><div><div class="upper">01 / Коллекция невозможного</div><h2>Не номера.<br><em class="gold">Владения.</em></h2></div><p class="section-sub">Мы отобрали места, где словосочетание «общий бассейн» считается оскорблением.</p></div>
+      <div class="hotels">
+        <article class="hotel" data-location="monaco"><div class="hotel-photo" style="background-image:url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&q=85')"><span class="hotel-tag">Для старых денег</span><span class="hotel-num">01</span></div><div class="hotel-body"><div class="hotel-loc">Монако · Французская Ривьера</div><h3>Château de l'Ego</h3><p>Терраса с видом на яхты людей, которые пока беднее вас.</p><div class="hotel-bottom"><div><small>Стоимость</small><b>Не принято обсуждать</b></div><button aria-label="Подробнее о Château de l'Ego" class="arrowbtn" data-hotel="Château de l'Ego">↗</button></div></div></article>
+        <article class="hotel" data-location="maldives"><div class="hotel-photo" style="background-image:url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=85')"><span class="hotel-tag">Особенно изолированно</span><span class="hotel-num">02</span></div><div class="hotel-body"><div class="hotel-loc">Мальдивы · Частный атолл</div><h3>Island of Important People</h3><p>Остров целиком ваш. Даже крабы подписали NDA.</p><div class="hotel-bottom"><div><small>Стоимость</small><b>По запросу дворецкого</b></div><button aria-label="Подробнее об Island of Important People" class="arrowbtn" data-hotel="Island of Important People">↗</button></div></div></article>
+        <article class="hotel" data-location="dubai"><div class="hotel-photo" style="background-image:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=85')"><span class="hotel-tag">Сверхразумная роскошь</span><span class="hotel-num">03</span></div><div class="hotel-body"><div class="hotel-loc">Дубай · Выше всяких ожиданий</div><h3>The Golden Problem</h3><p>Пентхаус настолько высоко, что проблемы остаются на первом этаже.</p><div class="hotel-bottom"><div><small>Стоимость</small><b>Семизначный шёпот</b></div><button aria-label="Подробнее о The Golden Problem" class="arrowbtn" data-hotel="The Golden Problem">↗</button></div></div></article>
+      </div>
+    </section>
+  </div>
+  <section class="benefits-section" id="ol-privileges"><div class="wrap"><div class="upper">02 / Сервис с излишним уважением</div><h2>Мелочи жизни.<br><em class="gold">Очень дорогие мелочи.</em></h2><div class="benefits"><div class="benefit"><div class="benefit-icon">♛</div><h3>Ваш персональный человек</h3><p>Консьерж, который решает вопросы быстрее, чем вы успеваете сказать «а вы знаете, кто я?».</p></div><div class="benefit"><div class="benefit-icon">✧</div><h3>Апгрейд самооценки</h3><p>Повышаем категорию номера, а заодно и социальный статус. Последнее — исключительно на словах.</p></div><div class="benefit"><div class="benefit-icon">◇</div><h3>Невидимый чек-аут</h3><p>Никаких очередей, ключ-карт и неловких разговоров о мини-баре. Особенно о мини-баре.</p></div></div></div></section>
+  <div class="wrap quote-section"><div class="quote-symbol">“</div><blockquote>«Раньше я просто бронировал отели. Теперь отели мечтают, чтобы я их забронировал».</blockquote><div class="quote-credit">— Анонимный наследник, предположительно</div></div>
+  <section class="membership" id="ol-club"><div class="wrap"><div class="upper">03 / Ваш билет в высшее общество</div><h2>У роскоши есть <em class="gold">уровни.</em><br>У вас — доступ.</h2><div class="plans">
+    <div class="plan"><div class="tier">Начальный уровень неприличия</div><h3>О!Лигарх Light</h3><div class="price">По знакомству <span>/ условно</span></div><ul><li>Золотой бейдж в личном кабинете</li><li>Подборка отелей, которых вы достойны</li><li>Уважительное «добрый день»</li></ul><button data-plan="О!Лигарх Light">ВЫБРАТЬ СТАТУС ↗</button></div>
+    <div class="plan featured"><span class="ribbon">Самый амбициозный</span><div class="tier">Эталон успешного успеха</div><h3>О!Лигарх Black</h3><div class="price">Бесценно <span>/ почти</span></div><ul><li>Всё из Light, но с особым выражением лица</li><li>Личный консьерж по имени Альфред</li><li>Приоритетный вход в любую переговорную</li><li>Комплименты даже от алгоритмов</li></ul><button data-plan="О!Лигарх Black">Я ЭТОГО ДОСТОИН ↗</button></div>
+    <div class="plan"><div class="tier">Семейные ценности</div><h3>О!Лигарх Dynasty</h3><div class="price">Цена — табу <span>/ навсегда</span></div><ul><li>Передача VIP-статуса по наследству</li><li>Свой герб на экране бронирования</li><li>Отдельная служба заботы о вашей яхте</li></ul><button data-plan="О!Лигарх Dynasty">СОЗДАТЬ ДИНАСТИЮ ↗</button></div>
+  </div></div></section>
+  <section class="bottom-cta"><div class="upper">Не откладывайте роскошь на потом</div><h2>Потому что <em class="gold">можете.</em></h2><p>Ваш следующий отпуск не должен быть просто хорошим. Он должен стать предметом зависти.</p><button class="goldbtn" data-modal="application">ВСТУПИТЬ В О!ЛИГАРХИ <span>↗</span></button></section>
+  <div class="wrap"><footer><div><div class="footbrand">О!ЛИГАРХ</div><div class="brandcaption">Сделано с любовью к чрезмерности</div></div><div class="footnote">Шуточный концепт по мотивам Островка. Не является настоящим сервисом, официальной программой лояльности или предложением бронирования. Все резиденции, тарифы и привилегии вымышлены.</div></footer></div>
+  <div class="modal-backdrop" id="ol-modal" role="dialog" aria-modal="true" aria-labelledby="ol-modal-title" aria-hidden="true"><div class="modal"><button class="close" id="ol-close" aria-label="Закрыть">×</button><div class="upper" id="ol-modal-eyebrow">О!Лигарх Private Service</div><h3 id="ol-modal-title">Ваше превосходительство.</h3><p id="ol-modal-description">Наш консьерж уже разминает пальцы.</p><button class="goldbtn" id="ol-modal-ok">ВЕЛИКОЛЕПНО ↗</button></div></div>
+  <div class="toast" id="ol-toast" role="status" aria-live="polite"></div>
+</div>
+<script>
+  (function(){
+    const root=document.getElementById('oligarch');
+    if(!root||root.dataset.ready)return;
+    root.dataset.ready='1';
+    const get=id=>root.querySelector('#'+id);
+    const modal=get('ol-modal'), title=get('ol-modal-title'), description=get('ol-modal-description'), eyebrow=get('ol-modal-eyebrow');
+    let toastTimer;
+    function showModal(head,body,sub='О!Лигарх Private Service'){
+      title.textContent=head;description.textContent=body;eyebrow.textContent=sub;modal.classList.add('visible');modal.setAttribute('aria-hidden','false');get('ol-close').focus();
+    }
+    function hideModal(){modal.classList.remove('visible');modal.setAttribute('aria-hidden','true')}
+    function toast(message){
+      const el=get('ol-toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3800);
+    }
+    root.querySelectorAll('[data-scroll]').forEach(btn=>btn.addEventListener('click',()=>root.querySelector(btn.dataset.scroll)?.scrollIntoView({behavior:'smooth',block:'center'})));
+    root.querySelectorAll('a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{const target=root.querySelector(link.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth'})}}));
+    root.querySelectorAll('[data-modal]').forEach(btn=>btn.addEventListener('click',()=>{
+      if(btn.dataset.modal==='access')showModal('Вас уже ожидают.','Но пока этот кабинет существует только в головах продуктовой команды. Ваш статус от этого нисколько не страдает.','Закрытый клуб');
+      else showModal('Заявка почти одобрена.','Мы проверили вашу готовность к роскоши. Осталось совсем немного: придумать настоящий продукт. Это шуточный концепт.','Особое приглашение');
+    }));
+    root.querySelectorAll('[data-hotel]').forEach(btn=>btn.addEventListener('click',()=>{
+      showModal(btn.dataset.hotel,'Резиденция прошла строгий отбор по количеству мрамора и уровню зависти. Объект вымышленный, но чувство исключительности — настоящее.','Private Collection · Детали резиденции');
+    }));
+    root.querySelectorAll('[data-plan]').forEach(btn=>btn.addEventListener('click',()=>{
+      showModal('Поздравляем. Вы — О!Лигарх.','Статус «'+btn.dataset.plan+'» присвоен вам торжественно и исключительно в рамках этой демоверсии. Консьерж Альфред просил передать поклон.','Церемония посвящения');
+    }));
+    get('ol-search-button').addEventListener('click',()=>{
+      const dest=get('ol-destination').value, dateIn=get('ol-in').value,dateOut=get('ol-out').value;
+      if(dateIn&&dateOut&&dateOut<=dateIn){toast('Даже олигархи не могут выселиться раньше заселения.');return}
+      let visible=0;
+      root.querySelectorAll('.hotel').forEach(card=>{let ok=dest==='all'||card.dataset.location===dest;card.style.display=ok?'':'none';if(ok)visible++});
+      root.querySelector('#ol-collection').scrollIntoView({behavior:'smooth'});
+      toast(visible+' избранных резиденций. Настоящее бронирование пока ниже нашего достоинства.');
+    });
+    get('ol-close').addEventListener('click',hideModal);
+    get('ol-modal-ok').addEventListener('click',hideModal);
+    modal.addEventListener('click',e=>{if(e.target===modal)hideModal()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')hideModal()});
+  })();
+</script>
+</body>
+</html>
