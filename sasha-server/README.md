@@ -30,6 +30,8 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 ## Editing
 
+`sasha-game/mechanics.js` explicitly balances all answers using three stats: team love, executive respect, and sanity. Common sense and pushing back on marketing earn team love; resisting absurdity costs sanity. Accepting corporate nonsense earns executive respect and restores sanity. Rest and delegation can restore sanity without increasing executive respect. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend. Mechanics changes alone preserve existing joke-rating revisions.
+
 Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Updating a scene creates a new revision; old ratings remain available in export and are excluded from the current-version summary.
 
 Only this entrypoint and the password-protected server are updated; the unrelated GitHub Pages root site is preserved. The original, previously public game can still exist in Git history; this login protects the new deployment and its new content, not historical public copies.
