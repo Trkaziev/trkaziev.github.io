@@ -38,8 +38,8 @@ const scripts=[...game.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let reached=new Set(),endings=new Set();
 for(let trial=0;trial<500;trial++){
  const sandbox={Math,sessionStorage:{getItem(){return null},setItem(){}}};vm.createContext(sandbox);for(let i=0;i<3;i++)vm.runInContext(scripts[i],sandbox);
- const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,63);assert.equal(c.rounds.length,16);let run=g.initial();
+ const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,77);assert.equal(c.rounds.length,24);let run=g.initial();
  while(g.current(run)){const scene=g.current(run);reached.add(scene.id);assert(scene.choices.length>=2);for(const choice of scene.choices){assert(choice.result);assert(choice.text);}const choice=scene.choices[Math.floor(Math.random()*scene.choices.length)];run=g.act(run,choice.id);for(const v of Object.values(run.stats))assert(v>=0&&v<=100);}
- assert.equal(run.moves.length,16);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,16);assert.equal(g.rewind(run,3).moves.length,3);
+ assert.equal(run.moves.length,24);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,24);assert.equal(g.rewind(run,3).moves.length,3);
 }
-assert.equal(reached.size,63);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
+assert.equal(reached.size,77);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
