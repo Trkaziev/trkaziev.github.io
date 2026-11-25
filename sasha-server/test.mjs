@@ -24,7 +24,7 @@ const game=await(await call('/',{cookie})).text();assert.match(game,/gameContent
 assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,200);
 assert.match(game,/sasha-assets\/prank-intro.js/);
 const photo=await call('/sasha-assets/bormintseva.jpg',{cookie});assert.equal(photo.status,200);assert.equal(photo.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/bormintseva.jpg'));
-const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.match(prank,/Ха, пиздабол/);new vm.Script(prank);
+const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.doesNotMatch(prank,/пиздабол/i);new vm.Script(prank);
 assert.equal((await call('/',{cookie:cookie+'bad'})).status,200);assert.match(await(await call('/',{cookie:cookie+'bad'})).text(),/id="login"/);
 const registry=JSON.parse(await fs.readFile('../sasha-game/registry.json','utf8'));const [question_id,revision]=Object.entries(registry)[0];const vote={campaign:'sasha-jokes-2026-11',question_id,revision,vote:1,comment:'Тест'};
 assert.equal((await call('/api/vote',{method:'POST',body:vote})).status,401);
