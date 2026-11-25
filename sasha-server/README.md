@@ -6,8 +6,8 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 15 decisions per playthrough, scenes drawn from thematic pools.
-- `/?review=1`: all 62 questions, all choices and outcomes, funny/not funny, optional comment.
+- `/`: game, 16 decisions per playthrough, scenes drawn from thematic pools. Career stages always progress from trader to iOS developer, development team lead, head of mobile development, then B2C product director.
+- `/?review=1`: all 63 questions, all choices and outcomes, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
@@ -31,6 +31,8 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 ## Editing
 
 `sasha-game/mechanics.js` explicitly balances all answers using three stats: team love, executive respect, and sanity. Common sense and pushing back on marketing earn team love; resisting absurdity costs sanity. Accepting corporate nonsense earns executive respect and restores sanity. Rest and delegation can restore sanity without increasing executive respect. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend. Mechanics changes alone preserve existing joke-rating revisions.
+
+`sasha-game/career.js` defines the five chronological stages and the trading opening. `build.mjs` assigns every round to a stage after selecting the six thematic scenes. Office labels and the timeline follow those round stages, independent of choice tags; the final chapter is always B2C product director.
 
 Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Updating a scene creates a new revision; old ratings remain available in export and are excluded from the current-version summary.
 
