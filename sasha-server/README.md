@@ -6,15 +6,15 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 24 decisions per playthrough: 4 trader, 5 iOS developer, 5 development team lead, 5 head of mobile development, 5 B2C product director. Scenes are drawn from thematic pools.
-- `/?review=1`: all 77 questions, all choices and outcomes, funny/not funny, optional comment.
+- `/`: game, 16 decisions per playthrough: 1 trader, 3 iOS developer, 3 development team lead, 3 head of mobile development, 6 B2C product director. Scenes are drawn from reviewed case pools.
+- `/?review=1`: all 30 questions, all choices, outcomes and factual context, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
 
 One vote per browser ID + question ID + content revision. Repeating a vote updates the existing row. A common login does not identify real people: different browsers or cleared storage can produce additional participants. Names are optional. Comments are limited to 500 characters. Failed requests never show success; progress is marked saved only after the server confirms the write.
 
-`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. Game scenes are fictional adaptations, not verbatim Slack records or medical claims.
+`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 29 premises reviewed against the owner's DM with Sasha and one owner-confirmed episode. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
 
 ## Runtime secrets
 
@@ -30,10 +30,10 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 ## Editing
 
-`sasha-game/mechanics.js` explicitly balances all answers using three stats: team love, executive respect, and sanity. Common sense and pushing back on marketing earn team love; resisting absurdity costs sanity. Accepting corporate nonsense earns executive respect and restores sanity. Rest and delegation can restore sanity without increasing executive respect. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend. Mechanics changes alone preserve existing joke-rating revisions.
+`sasha-game/grounded-scenes.js` is the sole active question bank. Every premise requires a `source` with either a reviewed Slack permalink/message timestamp or an explicit owner confirmation. Quotes must preserve their real speaker. Do not invent concrete incidents to fill career stages. Each answer carries three stat effects: team love, executive respect, and sanity. Resistance earns team love and costs sanity; accepting corporate nonsense earns executive respect. Rest and delegation may restore sanity without executive respect.
 
-`sasha-game/career.js` defines the five chronological stages. `career-episodes.js` adds six trading scenes, six iOS scenes, and one each for team lead and mobile head. Each run draws three trading and three iOS scenes from separate two-question pools, followed by the fixed trading-to-iOS and technical responsibility scenes. The six later thematic draws remain available. All draws persist per tab so refresh and replay preserve the selected questions. `build.mjs` assigns every round to a stage after selection. Office labels and the timeline follow those round stages, independent of choice tags; the final chapter is always B2C product director.
+`sasha-game/mechanics.js` validates provenance and effects, selects fourteen stable two-question draws, and adds the fixed opening and farewell. The five career stages remain chronological. `build.mjs` reuses only the UI/engine from the historical HTML template and discards its entire old data block. It emits `case-sources.json` for the owner's audit. Historical generic scene modules are not loaded or bundled. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend.
 
-Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Updating a scene creates a new revision; old ratings remain available in export and are excluded from the current-version summary.
+Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Displayed factual context and quotes are included in the rating revision alongside the question and answers. Older revisions and ratings for retired questions remain in the database/export and are excluded from the active summary; never clear them during an editorial cleanup.
 
 Only this entrypoint and the password-protected server are updated; the unrelated GitHub Pages root site is preserved. The original, previously public game can still exist in Git history; this login protects the new deployment and its new content, not historical public copies.
