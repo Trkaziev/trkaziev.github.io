@@ -38,9 +38,9 @@ const scripts=[...game.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let reached=new Set(),endings=new Set();
 for(let trial=0;trial<500;trial++){
  const sandbox={Math,sessionStorage:{getItem(){return null},setItem(){}}};vm.createContext(sandbox);for(let i=0;i<3;i++)vm.runInContext(scripts[i],sandbox);
- const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,27);assert.equal(c.rounds.length,13);let run=g.initial();
+ const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,23);assert.equal(c.rounds.length,11);let run=g.initial();
  for(const [id,s] of Object.entries(c.scenes)){const hash=x=>crypto.createHash('sha256').update(x).digest('hex');assert.equal(registry[hash(id).slice(0,24)],hash(JSON.stringify({title:s.title,body:s.body,choices:s.choices.map(choice=>[choice.id,choice.text,choice.result]),fact:s.fact})).slice(0,16));assert(['slack','owner'].includes(s.source.kind));}
  while(g.current(run)){const scene=g.current(run);reached.add(scene.id);assert(scene.choices.length>=2);for(const choice of scene.choices){assert(choice.result);assert(choice.text);}const choice=scene.choices[Math.floor(Math.random()*scene.choices.length)];run=g.act(run,choice.id);for(const v of Object.values(run.stats))assert(v>=0&&v<=100);}
- assert.equal(run.moves.length,13);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,13);assert.equal(g.rewind(run,3).moves.length,3);
+ assert.equal(run.moves.length,11);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,11);assert.equal(g.rewind(run,3).moves.length,3);
 }
-assert.equal(reached.size,27);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
+assert.equal(reached.size,23);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));

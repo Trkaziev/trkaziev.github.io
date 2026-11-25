@@ -6,15 +6,15 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 13 decisions per playthrough: 2 mobile-development, 4 team-lead/hiring, 3 mobile-head, 4 B2C-director. The trader stage and owner-confirmed personal details are introductory biography, without a forced quiz question.
-- `/?review=1`: all 27 questions, all choices, outcomes and factual context, funny/not funny, optional comment.
+- `/`: game, 11 decisions per playthrough: 4 team-lead/hiring, 3 mobile-head, 4 B2C-director. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
+- `/?review=1`: all 23 questions, all choices and outcomes, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
 
 One vote per browser ID + question ID + content revision. Repeating a vote updates the existing row. A common login does not identify real people: different browsers or cleared storage can produce additional participants. Names are optional. Comments are limited to 500 characters. Failed requests never show success; progress is marked saved only after the server confirms the write.
 
-`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 26 premises reviewed against the owner's DM with Sasha and one explicitly proposed hypothetical question. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
+`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 22 premises reviewed against the owner's DM with Sasha and one explicitly proposed hypothetical question. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
 
 ## Runtime secrets
 
@@ -34,8 +34,10 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 Question descriptions use full sentences: who brought the task, what happened, what is contradictory, and what decision is needed. The situation itself supplies the absurdity; do not depend on cryptic headlines, missing context or elaborate metaphors. Familiar words such as SERP and event are retained. Ordinary work episodes without a clear conflict are retired instead of padded with jokes. The ten team-lead questions concern hiring; the owner's critical-interview question is always included in the mobile-head stage.
 
-`sasha-game/mechanics.js` validates provenance and effects and selects thirteen stable case draws, including mandatory mobile cases and the owner's interview question. The five career stages remain chronological, starting with biography rather than a fictional trading question. A real farewell note is used in endings. `build.mjs` reuses only the UI/engine from the historical HTML template and discards its entire old data block. It emits `case-sources.json` for the owner's audit. Historical generic scene modules are not loaded or bundled. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend.
+`sasha-game/mechanics.js` validates provenance and effects and selects eleven stable case draws, including the owner's mandatory interview question. The five career stages remain chronological, starting with biography rather than a fictional trading question. A real farewell note is used in endings. `build.mjs` reuses only the UI/engine from the historical HTML template and discards its entire old data block. It emits `case-sources.json` for the owner's audit. Historical generic scene modules are not loaded or bundled. Run `node sasha-game/mechanics.test.mjs` after rebuilding the frontend.
 
-Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Displayed factual context and quotes are included in the rating revision alongside the question and answers. Older revisions and ratings for retired questions remain in the database/export and are excluded from the active summary; never clear them during an editorial cleanup.
+Editable plaintext game sources are delivered locally in `sasha-source.zip`. Keep them private. Update scenes, rebuild the HTML and hashed registry, re-encrypt the assets with `CONTENT_KEY`, run the backend/game tests, then publish through Sites. Evidence and verbatim Slack quotes stay in source metadata and the private source catalog. They are not rendered on question, outcome or rating screens. Existing revision hashes retain evidence for compatibility. Older revisions and ratings for retired questions remain in the database/export and are excluded from the active summary; never clear them during an editorial cleanup.
 
 Only this entrypoint and the password-protected server are updated; the unrelated GitHub Pages root site is preserved. The original, previously public game can still exist in Git history; this login protects the new deployment and its new content, not historical public copies.
+
+Review feedback: preserve the absurd real premise and make each choice respond to it. Avoid padding with two textbook management answers. Keep choices specifically praised by the owner. Do not depict Liza Demchenko, Denis Dobrynin, Dasha Reshetova or Nastya Beneva negatively. Ratings and comments for all retired questions remain stored.
