@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
-const key=process.env.CONTENT_KEY;
+const key=process.env.CONTENT_KEY_V2||process.env.CONTENT_KEY;
 if(!key)throw Error('CONTENT_KEY required');
 const assets={};
 for(const [route,file,type] of [['/','../sasha-game/sasha-est-minutka.html','text/html;charset=utf-8'],['/sasha-assets/voting.js','../sasha-game/sasha-assets/voting.js','text/javascript;charset=utf-8'],['/sasha-assets/voting.css','../sasha-game/sasha-assets/voting.css','text/css;charset=utf-8'],['/sasha-assets/prank-intro.js','../sasha-game/sasha-assets/prank-intro.js','text/javascript;charset=utf-8'],['/sasha-assets/prank-intro.css','../sasha-game/sasha-assets/prank-intro.css','text/css;charset=utf-8'],['/sasha-assets/bormintseva.jpg','../sasha-game/sasha-assets/bormintseva.jpg','image/jpeg']]) {

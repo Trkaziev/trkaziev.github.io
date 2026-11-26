@@ -8,7 +8,7 @@ let input='';for await(const chunk of process.stdin)input+=chunk;const secrets=J
 const sql=new DatabaseSync(':memory:');sql.exec(await fs.readFile('drizzle/0000_votes.sql','utf8'));
 const testPassword=crypto.randomBytes(24).toString('hex');
 const testPasswordHash=crypto.pbkdf2Sync(testPassword,secrets.LOGIN_SALT,100000,32,'sha256').toString('hex');
-const env={...secrets,LOGIN_USERNAME:'sasha',LOGIN_PASSWORD_HASH:testPasswordHash,DB:{prepare(query){return{bind(...args){const stmt=sql.prepare(query);return{first:async()=>stmt.get(...args)||null,all:async()=>({results:stmt.all(...args)}),run:async()=>stmt.run(...args)};}}}}};
+const env={...secrets,CONTENT_KEY:crypto.randomBytes(32).toString('hex'),CONTENT_KEY_V2:secrets.CONTENT_KEY,LOGIN_USERNAME:'sasha',LOGIN_PASSWORD_HASH:testPasswordHash,DB:{prepare(query){return{bind(...args){const stmt=sql.prepare(query);return{first:async()=>stmt.get(...args)||null,all:async()=>({results:stmt.all(...args)}),run:async()=>stmt.run(...args)};}}}}};
 const origin='https://example.test';
 const call=(path,{method='GET',body,cookie,key,originOverride=origin}={})=>worker.fetch(new Request(origin+path,{method,headers:{...(method==='POST'?{'Content-Type':'application/json',Origin:originOverride}:{}),...(cookie?{Cookie:cookie}:{}),...(key?{Authorization:'Bearer '+key}:{})},body:body?JSON.stringify(body):undefined}),env);
 assert.equal((await call('/')).status,200);assert.match(await (await call('/')).text(),/id="login"/);assert.doesNotMatch(await(await call('/')).text(),/Борминцева|катя-interview|gameContent/);
@@ -20,7 +20,7 @@ assert.equal((await call('/api/login',{method:'POST',body:{...login,password:'wr
 assert.equal((await call('/api/login',{method:'POST',body:login,originOverride:'https://evil.test'})).status,403);
 const r=await call('/api/login',{method:'POST',body:login});assert.equal(r.status,200);const cookie=r.headers.get('set-cookie').split(';')[0];assert.match(r.headers.get('set-cookie'),/HttpOnly; Secure; SameSite=Strict/);
 assert.equal((await call('/api/session',{cookie})).status,200);assert.equal((await (await call('/api/session',{cookie})).json()).name,'Проверка');
-const game=await(await call('/',{cookie})).text();assert.match(game,/gameContent/);assert.match(game,/casePools/);assert.doesNotMatch(game,/trader-signal|ios-simulator|head-mobile-platform/);
+const game=await(await call('/',{cookie})).text();assert.match(game,/gameContent/);assert.match(game,/timeline/);assert.doesNotMatch(game,/trader-signal|ios-simulator|head-mobile-platform/);
 assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,200);
 assert.match(game,/sasha-assets\/prank-intro.js/);
 const photo=await call('/sasha-assets/bormintseva.jpg',{cookie});assert.equal(photo.status,200);assert.equal(photo.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/bormintseva.jpg'));
@@ -40,9 +40,9 @@ const scripts=[...game.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let reached=new Set(),endings=new Set();
 for(let trial=0;trial<500;trial++){
  const sandbox={Math,sessionStorage:{getItem(){return null},setItem(){}}};vm.createContext(sandbox);for(let i=0;i<3;i++)vm.runInContext(scripts[i],sandbox);
- const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,21);assert.equal(c.rounds.length,11);let run=g.initial();
+ const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,26);assert.equal(c.rounds.length,26);let run=g.initial();
  for(const [id,s] of Object.entries(c.scenes)){const hash=x=>crypto.createHash('sha256').update(x).digest('hex');assert.equal(registry[hash(id).slice(0,24)],hash(JSON.stringify({title:s.title,body:s.body,choices:s.choices.map(choice=>[choice.id,choice.text,choice.result]),fact:s.fact})).slice(0,16));assert(['slack','owner'].includes(s.source.kind));}
  while(g.current(run)){const scene=g.current(run);reached.add(scene.id);assert(scene.choices.length>=2);for(const choice of scene.choices){assert(choice.result);assert(choice.text);}const choice=scene.choices[Math.floor(Math.random()*scene.choices.length)];run=g.act(run,choice.id);for(const v of Object.values(run.stats))assert(v>=0&&v<=100);}
- assert.equal(run.moves.length,11);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,11);assert.equal(g.rewind(run,3).moves.length,3);
+ assert.equal(run.moves.length,26);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,26);assert.equal(g.rewind(run,3).moves.length,3);
 }
-assert.equal(reached.size,21);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
+assert.equal(reached.size,26);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
