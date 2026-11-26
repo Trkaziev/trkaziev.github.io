@@ -30,7 +30,7 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 ## Editing
 
-Both action minigames use the three owner-supplied meme banner images from `sasha-game/ad-art.js`. They are preloaded before the round timer starts and rendered without cropping; if an individual image fails, its text label remains playable. Banner images are protected encrypted assets. Restarting or leaving during loading cancels the pending round.
+Both action minigames share 13 unique owner-supplied meme images from `sasha-game/ad-art.js`, including the original three banners. Exact duplicate submissions appear only once. Each image is sampled with equal probability, preloaded before the round timer starts and rendered without cropping; if an individual image fails, its text label remains playable. Web copies use JPEG encoding at their original dimensions to reduce download size. Banner images are protected encrypted assets. Restarting or leaving during loading cancels the pending round.
 
 The hammer break after question 16 uses the owner's app-home screenshot as its playfield, with six invisible banner slots over the hotel search and cards. The app screenshot is encrypted with the other protected assets. Empty slots have no visible placeholder.
 
