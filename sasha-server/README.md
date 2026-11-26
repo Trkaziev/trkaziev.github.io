@@ -30,6 +30,8 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 ## Editing
 
+After question 8, the optional-repeat fortune wheel shows ten sectors: seven attractive prizes and three gag prizes. Only the laxative promotion, Floktory dinner and four-hour GR lecture are eligible outcomes, with equal probability. The animation's final angle matches the selected sector. Spins are unlimited; result and completion are saved with the existing playthrough. The wheel does not affect the three meters, question count or ratings. The banner-hammer break remains after question 16.
+
 `sasha-game/grounded-scenes.js` is the sole active question bank. Every premise requires a `source` with either a reviewed Slack permalink/message timestamp or an explicit owner-proposed question. Distinguish hypothetical scenarios from confirmed facts. The AI privacy incident is explicitly fictional. Quotes must preserve their real speaker. Do not invent concrete incidents to fill career stages. Each answer carries three stat effects: team love, executive respect, and sanity. Resistance earns team love and costs sanity; accepting corporate nonsense earns executive respect. Rest and delegation may restore sanity without executive respect.
 
 Question descriptions use full sentences: who brought the task, what happened, what is contradictory, and what decision is needed. The situation itself supplies the absurdity; do not depend on cryptic headlines, missing context or elaborate metaphors. Familiar words such as SERP and event are retained. Ordinary work episodes without a clear conflict are retired instead of padded with jokes. The eight team-lead questions concern hiring; the owner's critical-interview question is always included in the mobile-head stage.
