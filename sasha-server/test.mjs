@@ -13,7 +13,7 @@ const origin='https://example.test';
 const call=(path,{method='GET',body,cookie,key,originOverride=origin}={})=>worker.fetch(new Request(origin+path,{method,headers:{...(method==='POST'?{'Content-Type':'application/json',Origin:originOverride}:{}),...(cookie?{Cookie:cookie}:{}),...(key?{Authorization:'Bearer '+key}:{})},body:body?JSON.stringify(body):undefined}),env);
 assert.equal((await call('/')).status,200);assert.match(await (await call('/')).text(),/id="login"/);assert.doesNotMatch(await(await call('/')).text(),/Борминцева|катя-interview|gameContent/);
 assert.equal((await call('/sasha-assets/voting.js')).status,401);
-for(const path of ['/sasha-assets/prank-intro.js','/sasha-assets/prank-intro.css','/sasha-assets/bormintseva.jpg','/sasha-assets/hotels-not-banners.png'])assert.equal((await call(path)).status,401);
+for(const path of ['/sasha-assets/prank-intro.js','/sasha-assets/prank-intro.css','/sasha-assets/bormintseva.jpg','/sasha-assets/hotels-not-banners.png','/sasha-assets/app-home.jpg'])assert.equal((await call(path)).status,401);
 const voter='test-voter-123456789';
 const login={username:'sasha',password:testPassword,voter_id:voter,name:'Проверка'};
 assert.equal((await call('/api/login',{method:'POST',body:{...login,password:'wrong'}})).status,401);
@@ -25,6 +25,8 @@ assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,200);
 assert.match(game,/sasha-assets\/prank-intro.js/);
 const photo=await call('/sasha-assets/bormintseva.jpg',{cookie});assert.equal(photo.status,200);assert.equal(photo.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/bormintseva.jpg'));
 const screenshot=await call('/sasha-assets/hotels-not-banners.png',{cookie});assert.equal(screenshot.status,200);assert.equal(screenshot.headers.get('Content-Type'),'image/png');assert.deepEqual(Buffer.from(await screenshot.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/hotels-not-banners.png'));
+const appScreen=await call('/sasha-assets/app-home.jpg',{cookie});assert.equal(appScreen.status,200);assert.equal(appScreen.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await appScreen.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/app-home.jpg'));
+for(const name of ['ad-eggs.png','ad-bananas.png','ad-wheel.png']){const path='/sasha-assets/'+name;assert.equal((await call(path)).status,401);const image=await call(path,{cookie});assert.equal(image.status,200);assert.equal(image.headers.get('Content-Type'),'image/png');assert.deepEqual(Buffer.from(await image.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/'+name));}
 const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.doesNotMatch(prank,/пиздабол/i);new vm.Script(prank);
 assert.equal((await call('/',{cookie:cookie+'bad'})).status,200);assert.match(await(await call('/',{cookie:cookie+'bad'})).text(),/id="login"/);
 const registry=JSON.parse(await fs.readFile('../sasha-game/registry.json','utf8'));const [question_id,revision]=Object.entries(registry)[0];const vote={campaign:'sasha-jokes-2026-11',question_id,revision,vote:1,comment:'Тест'};

@@ -30,9 +30,13 @@ To stop the temporary collection, disable `/api/vote` or change the campaign in 
 
 ## Editing
 
+Both action minigames use the three owner-supplied meme banner images from `sasha-game/ad-art.js`. They are preloaded before the round timer starts and rendered without cropping; if an individual image fails, its text label remains playable. Banner images are protected encrypted assets. Restarting or leaving during loading cancels the pending round.
+
+The hammer break after question 16 uses the owner's app-home screenshot as its playfield, with six invisible banner slots over the hotel search and cards. The app screenshot is encrypted with the other protected assets. Empty slots have no visible placeholder.
+
 The owner-proposed hotels-versus-banners scene includes a screenshot in game and review mode. The PNG is an encrypted protected asset, served only after login; keep its plaintext source private.
 
-After question 24, a 40-second three-lane snowboard runner appears inside a mobile-app frame. The player dodges advertising banners with arrows, A/D, swipe gestures or on-screen buttons. Three collisions end the run; every obstacle row leaves a lane open. Switching tabs pauses the run. Results and completion are saved with the playthrough, and a browser-local record persists across restarts. Runner points do not affect the three meters or ratings. Starting over clears all three break completion flags.
+After question 24, a 40-second three-lane snowboard runner appears inside a mobile-app frame. The player dodges advertising banners with arrows, A/D, swipe gestures or on-screen buttons. Each obstacle row spawns three collectible brain coins along its free lane; collecting one awards 100 runner points and displays pickup feedback. The brain total is shown in the HUD and saved with the result. Three collisions end the run; every obstacle row leaves a lane open. Switching tabs pauses the run. Results and completion are saved with the playthrough, and a browser-local record persists across restarts. Runner points do not affect the three meters or ratings. Starting over clears all three break completion flags.
 
 After question 8, the optional-repeat fortune wheel shows ten sectors: seven attractive prizes and three gag prizes. Prize names are written directly on the wheel sectors; the full name is shown in the result. Only the laxative promotion, Floktory dinner and four-hour meeting about launching Avia in B2C are eligible outcomes, with equal probability. The animation's final angle matches the selected sector. Spins are unlimited; result and completion are saved with the existing playthrough. The wheel does not affect the three meters, question count or ratings. The banner-hammer break remains after question 16.
 
