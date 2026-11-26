@@ -13,7 +13,7 @@ const origin='https://example.test';
 const call=(path,{method='GET',body,cookie,key,originOverride=origin}={})=>worker.fetch(new Request(origin+path,{method,headers:{...(method==='POST'?{'Content-Type':'application/json',Origin:originOverride}:{}),...(cookie?{Cookie:cookie}:{}),...(key?{Authorization:'Bearer '+key}:{})},body:body?JSON.stringify(body):undefined}),env);
 assert.equal((await call('/')).status,200);assert.match(await (await call('/')).text(),/id="login"/);assert.doesNotMatch(await(await call('/')).text(),/Борминцева|катя-interview|gameContent/);
 assert.equal((await call('/sasha-assets/voting.js')).status,401);
-for(const path of ['/sasha-assets/prank-intro.js','/sasha-assets/prank-intro.css','/sasha-assets/bormintseva.jpg'])assert.equal((await call(path)).status,401);
+for(const path of ['/sasha-assets/prank-intro.js','/sasha-assets/prank-intro.css','/sasha-assets/bormintseva.jpg','/sasha-assets/hotels-not-banners.png'])assert.equal((await call(path)).status,401);
 const voter='test-voter-123456789';
 const login={username:'sasha',password:testPassword,voter_id:voter,name:'Проверка'};
 assert.equal((await call('/api/login',{method:'POST',body:{...login,password:'wrong'}})).status,401);
@@ -24,6 +24,7 @@ const game=await(await call('/',{cookie})).text();assert.match(game,/gameContent
 assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,200);
 assert.match(game,/sasha-assets\/prank-intro.js/);
 const photo=await call('/sasha-assets/bormintseva.jpg',{cookie});assert.equal(photo.status,200);assert.equal(photo.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/bormintseva.jpg'));
+const screenshot=await call('/sasha-assets/hotels-not-banners.png',{cookie});assert.equal(screenshot.status,200);assert.equal(screenshot.headers.get('Content-Type'),'image/png');assert.deepEqual(Buffer.from(await screenshot.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/hotels-not-banners.png'));
 const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.doesNotMatch(prank,/пиздабол/i);new vm.Script(prank);
 assert.equal((await call('/',{cookie:cookie+'bad'})).status,200);assert.match(await(await call('/',{cookie:cookie+'bad'})).text(),/id="login"/);
 const registry=JSON.parse(await fs.readFile('../sasha-game/registry.json','utf8'));const [question_id,revision]=Object.entries(registry)[0];const vote={campaign:'sasha-jokes-2026-11',question_id,revision,vote:1,comment:'Тест'};
@@ -40,9 +41,9 @@ const scripts=[...game.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let reached=new Set(),endings=new Set();
 for(let trial=0;trial<500;trial++){
  const sandbox={Math,sessionStorage:{getItem(){return null},setItem(){}}};vm.createContext(sandbox);for(let i=0;i<3;i++)vm.runInContext(scripts[i],sandbox);
- const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,33);assert.equal(c.rounds.length,33);let run=g.initial();
+ const c=sandbox.gameContent,g=sandbox.createGame(c);assert.equal(Object.keys(c.scenes).length,34);assert.equal(c.rounds.length,34);let run=g.initial();
  for(const [id,s] of Object.entries(c.scenes)){const hash=x=>crypto.createHash('sha256').update(x).digest('hex');assert.equal(registry[hash(id).slice(0,24)],hash(JSON.stringify({title:s.title,body:s.body,choices:s.choices.map(choice=>[choice.id,choice.text,choice.result]),fact:s.fact})).slice(0,16));assert(['slack','owner'].includes(s.source.kind));}
  while(g.current(run)){const scene=g.current(run);reached.add(scene.id);assert(scene.choices.length>=2);for(const choice of scene.choices){assert(choice.result);assert(choice.text);}const allowed=scene.choices.filter(choice=>g.canChoose(run,choice.id)&&!choice.specialEnding);assert(allowed.length);const choice=allowed[Math.floor(Math.random()*allowed.length)];run=g.act(run,choice.id);for(const v of Object.values(run.stats))assert(v>=0&&v<=100);}
- assert.equal(run.moves.length,33);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,33);assert.equal(g.rewind(run,3).moves.length,3);
+ assert.equal(run.moves.length,34);assert(g.finish(run));endings.add(g.finish(run).id);assert.equal(g.restore(g.encode(run)).moves.length,34);assert.equal(g.rewind(run,3).moves.length,3);
 }
-assert.equal(reached.size,33);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));
+assert.equal(reached.size,34);console.log(JSON.stringify({backend:'passed',sessions:500,reachableScenes:reached.size,endings:[...endings]}));

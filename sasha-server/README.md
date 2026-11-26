@@ -6,8 +6,8 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 33 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
-- `/?review=1`: all 33 questions, all choices and outcomes, funny/not funny, optional comment.
+- `/`: game, 34 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
+- `/?review=1`: all 34 questions, all choices and outcomes, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
@@ -29,6 +29,8 @@ After login, provide the owner key on the results page. `/api/admin/export` requ
 To stop the temporary collection, disable `/api/vote` or change the campaign in a new release. Export first; retain the D1 database until the labels have been processed. Do not delete votes as part of routine redeployment.
 
 ## Editing
+
+The owner-proposed hotels-versus-banners scene includes a screenshot in game and review mode. The PNG is an encrypted protected asset, served only after login; keep its plaintext source private.
 
 After question 24, a 40-second three-lane snowboard runner appears inside a mobile-app frame. The player dodges advertising banners with arrows, A/D, swipe gestures or on-screen buttons. Three collisions end the run; every obstacle row leaves a lane open. Switching tabs pauses the run. Results and completion are saved with the playthrough, and a browser-local record persists across restarts. Runner points do not affect the three meters or ratings. Starting over clears all three break completion flags.
 
