@@ -6,15 +6,15 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 26 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
-- `/?review=1`: all 26 questions, all choices and outcomes, funny/not funny, optional comment.
+- `/`: game, 32 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
+- `/?review=1`: all 32 questions, all choices and outcomes, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
 
 One vote per browser ID + question ID + content revision. Repeating a vote updates the existing row. A common login does not identify real people: different browsers or cleared storage can produce additional participants. Names are optional. Comments are limited to 500 characters. Failed requests never show success; progress is marked saved only after the server confirms the write.
 
-`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 20 premises reviewed against the owner's DM with Sasha and six owner-proposed questions. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
+`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 20 premises reviewed against the owner's DM with Sasha and twelve owner-proposed questions. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
 
 ## Runtime secrets
 
@@ -43,3 +43,5 @@ Only this entrypoint and the password-protected server are updated; the unrelate
 Review feedback: preserve the absurd real premise and make each choice respond to it. Avoid padding with two textbook management answers. Keep choices specifically praised by the owner. Do not depict Liza Demchenko, Denis Dobrynin, Dasha Reshetova or Nastya Beneva negatively. Ratings and comments for all retired questions remain stored.
 
 Processed owner comments are archived locally with exact question revisions before cleanup. The UI moves only exact reviewed comment fingerprints to a browser-local archive and blanks those comment fields once, preserving votes, revisions, other participants and newer notes. Existing D1 rows remain available in the owner export.
+
+Endings are selected by the final three meters, with eight regular outcomes: all meters >=75, sanity <=20, each high-meter pair, or the dominant meter (love then executive respect break ties). Each ending displays its rule and final scores. The Revolut answer has one resumable early ending, which does not consume the interview question or change stats. Partner tags unlock the subsequent loyalty choices; the Misha path also requires sanity >=5, restored by that match. Disabled choices cannot be selected through keyboard input, the game engine or tampered saved progress. Tests cover save/restore, all four partner routes and return from the early ending.
