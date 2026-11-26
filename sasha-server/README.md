@@ -6,15 +6,15 @@ Backend: dependency-free Cloudflare Worker + D1, deployed through Sites. Source 
 
 ## URLs
 
-- `/`: game, 32 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
-- `/?review=1`: all 32 questions, all choices and outcomes, funny/not funny, optional comment.
+- `/`: game, 33 decisions per playthrough: every active scene exactly once in a single ordered timeline. Personal scenarios are interleaved with work. Trading and iOS-development remain in the introductory career biography. Ordinary analytics episodes were retired after review feedback.
+- `/?review=1`: all 33 questions, all choices and outcomes, funny/not funny, optional comment.
 - `/?results=1`: owner dashboard; requires a separate owner key in addition to login. JSON/CSV export includes exact scene revisions. CSV neutralizes spreadsheet formula prefixes.
 
 ## Data
 
 One vote per browser ID + question ID + content revision. Repeating a vote updates the existing row. A common login does not identify real people: different browsers or cleared storage can produce additional participants. Names are optional. Comments are limited to 500 characters. Failed requests never show success; progress is marked saved only after the server confirms the write.
 
-`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 20 premises reviewed against the owner's DM with Sasha and twelve owner-proposed questions. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
+`votes` stores campaign, anonymous browser ID, hashed question ID, content revision, rating (0/1), optional nickname/comment and timestamps. It does not store Slack messages. `login_limits` stores salted hashes of client IPs and temporary attempt counters. The active bank contains 20 premises reviewed against the owner's DM with Sasha and thirteen owner-proposed questions. Answer choices and consequences are fictional jokes. Original speakers and uncertainty in the sources are preserved.
 
 ## Runtime secrets
 
@@ -47,3 +47,7 @@ Processed owner comments are archived locally with exact question revisions befo
 Endings are selected by the final three meters, with eight regular outcomes: all meters >=75, sanity <=20, each high-meter pair, or the dominant meter (love then executive respect break ties). Each ending displays its rule and final scores. The Revolut answer has one resumable early ending, which does not consume the interview question or change stats. Partner tags unlock the subsequent loyalty choices; the Misha path also requires sanity >=5, restored by that match. Disabled choices cannot be selected through keyboard input, the game engine or tampered saved progress. Tests cover save/restore, all four partner routes and return from the early ending.
 
 Scoring audit: each choice explicitly declares all three integer deltas, including zero. Private events affect sanity only unless a stated work relationship is involved. Ordinary interview administration, jokes and personal advice do not automatically affect executive respect. Extra work does not automatically restore sanity. Real company results may improve both team and executive relations. The two owner-requested Revolut exaggerations remain scripted exceptions. Calculation: clamp(previous + (delta ?? 0), 0, 100). Outcomes and review show neutral deltas; requested changes capped by the meter are also correctly shown as zero. Humor ratings retain their existing content revisions because question text and consequences are unchanged.
+
+Probability balance: baseStats retain the authored causal effects, including all neutral axes. Runtime scoring applies separate integer-rounded gain/cost weights per meter. Under uniform eligible answers conditional on completing the main timeline, exact dynamic programming gives P(final=100): love 10.0034%, respect 10.0381%, sanity 10.0028%. The early Revolut exit is excluded; the resumed interview uses its two continuing answers uniformly. Partner dependencies and all intermediate 0–100 clamps are included. Scoring is independently checked with 100,000 complete game-engine simulations. This calibrates full-meter probabilities, not ending frequencies or average scores.
+
+After answer 16 the UI opens a 30-second banner whack-a-mole break. +10 per banner, -5 per empty pipe, floor zero. Results and the local best are independent of the three meters. Progress stores breakDone and breakResult so reloading the result preserves the score and continuing returns to question 17. Retrying can improve the local high score. The game and CSS are inlined into the encrypted HTML; no new public asset or database table is needed.
