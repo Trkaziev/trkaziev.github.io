@@ -10,6 +10,8 @@ The old voting JavaScript and CSS are not bundled or served. The vote submission
 
 Login keeps the existing shared username and password. The review-only nickname field is gone. Logout, restart at the top of the page, restart at the end, saved progress and the complete introductory joke remain available. The game save key and timeline have not changed in this release.
 
+On the rules screen, the read-confirmation button escapes five times, then returns to its original position after 500 ms and stops escaping. The refusal button becomes enabled at that point; clicking it shows the owner's exact error message for 2.6 seconds. The read-confirmation button still opens the joke CAPTCHA. The refusal button on the first welcome screen remains disabled.
+
 ## Game
 
 The first question is the owner-proposed fictional NVIDIA story, followed by the existing question order. Career mapping, choices, stats and ending rules are unchanged by this release. The deliberate padel-partner dependency is retained. The Revolut early ending can be resumed.
