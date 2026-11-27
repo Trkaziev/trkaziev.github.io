@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import vm from 'node:vm';
-const key=process.env.CONTENT_KEY_V2||process.env.CONTENT_KEY;
+const key=process.env.CONTENT_KEY_V3||process.env.CONTENT_KEY_V2||process.env.CONTENT_KEY;
 if(!key)throw Error('CONTENT_KEY required');
 const assets={};
 const catalog={};vm.runInNewContext(await fs.readFile('../sasha-game/ad-art.js','utf8'),catalog);
