@@ -1,5 +1,4 @@
 // Server-side password gate. Game assets are encrypted in the source repository.
-import registry from './registry.js';
 import assets from './assets.js';
 import { loginPage } from './login.js';
 const CAMPAIGN='sasha-jokes-2026-11';
@@ -25,8 +24,10 @@ export default {
       if(origin&&!allowed)fail(403,'Этот источник не разрешён');
       if(request.method==='POST'&&!origin)fail(403,'Отсутствует источник запроса');
       if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
-      const path=new URL(request.url).pathname;
-      if(request.method==='GET'&&path==='/api/health')return reply({ok:true,service:'invitation-only-rating-api'});
+      const url=new URL(request.url),path=url.pathname;
+      if(request.method==='GET'&&path==='/api/health')return reply({ok:true,service:'sasha-game'});
+      if(path==='/api/vote'||path==='/api/admin/clear-my-votes')return reply({error:'Сбор оценок завершён'},410);
+      if(request.method==='GET'&&(path==='/'||path==='/sasha-est-minutka.html')&&['review','results','start'].some(key=>url.searchParams.has(key)))return new Response(null,{status:303,headers:{...headers,Location:url.origin+'/'}});
       if(!env.DB||!env.LOGIN_PASSWORD_HASH||!env.LOGIN_SALT||!env.SESSION_SECRET||!env.ADMIN_SHA256||!env.CONTENT_KEY)fail(503,'Сервис ещё настраивается');
       if(request.method==='POST'&&path==='/api/login'){
         const p=await json(request);
@@ -46,28 +47,12 @@ export default {
       const user=await verify(request,env);
       if(request.method==='GET'&&path==='/api/session')return reply({ok:true,name:user.name,voter_id:user.voter_id});
       if(request.method==='GET'&&Object.hasOwn(assets,path))return asset(path,env,headers);
-      if(request.method==='POST'&&path==='/api/vote'){
-        const p=await json(request);
-        if(p.campaign!==CAMPAIGN||!Object.hasOwn(registry,p.question_id)||registry[p.question_id]!==p.revision||(p.vote!==0&&p.vote!==1)||typeof p.comment!=='string'||p.comment.length>500)fail(400,'Вопрос изменился или оценка некорректна. Обнови страницу.');
-        // One record per browser, question and exact revision; retry/change replaces it.
-        const now=new Date().toISOString();
-        const recent=await env.DB.prepare('SELECT updated_at FROM votes WHERE campaign = ? AND voter_id = ? ORDER BY updated_at DESC LIMIT 1').bind(CAMPAIGN,user.voter_id).first();
-        if(recent&&Date.now()-Date.parse(recent.updated_at)<500)fail(429,'Подожди секунду и попробуй снова');
-        await env.DB.prepare('INSERT INTO votes (campaign,voter_id,question_id,revision,vote,name,comment,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(campaign,voter_id,question_id,revision) DO UPDATE SET vote=excluded.vote,name=excluded.name,comment=excluded.comment,updated_at=excluded.updated_at').bind(CAMPAIGN,user.voter_id,p.question_id,p.revision,p.vote,user.name,p.comment.trim(),now,now).run();
-        return reply({saved:true,updated_at:now});
-      }
       if(request.method==='GET'&&path==='/api/admin/export'){
         const key=(request.headers.get('Authorization')||'').replace(/^Bearer /,'');
         if(!key||!equal(await digest(key),env.ADMIN_SHA256))fail(401,'Неверный ключ владельца');
         const {results}=await env.DB.prepare('SELECT campaign,voter_id,question_id,revision,vote,name,comment,created_at,updated_at FROM votes WHERE campaign = ? ORDER BY updated_at LIMIT 20001').bind(CAMPAIGN).all();
         if(results.length>20000)fail(413,'Для большого экспорта используйте доступ владельца к БД');
         return reply({campaign:CAMPAIGN,votes:results});
-      }
-      if(request.method==='POST'&&path==='/api/admin/clear-my-votes'){
-        const key=(request.headers.get('Authorization')||'').replace(/^Bearer /,'');
-        if(!key||!equal(await digest(key),env.ADMIN_SHA256))fail(401,'Неверный ключ владельца');
-        await env.DB.prepare('DELETE FROM votes WHERE campaign=? AND voter_id=?').bind(CAMPAIGN,user.voter_id).run();
-        return reply({cleared:true});
       }
       return reply({error:'Not found'},404);
     }catch(e){return reply({error:e.status?e.message:'Сбой сохранения. Попробуй ещё раз.'},e.status||500);}

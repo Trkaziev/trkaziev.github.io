@@ -21,24 +21,29 @@ assert.equal((await call('/api/login',{method:'POST',body:login,originOverride:'
 const r=await call('/api/login',{method:'POST',body:login});assert.equal(r.status,200);const cookie=r.headers.get('set-cookie').split(';')[0];assert.match(r.headers.get('set-cookie'),/HttpOnly; Secure; SameSite=Strict/);
 assert.equal((await call('/api/session',{cookie})).status,200);assert.equal((await (await call('/api/session',{cookie})).json()).name,'Проверка');
 const game=await(await call('/',{cookie})).text();assert.match(game,/gameContent/);assert.match(game,/timeline/);assert.doesNotMatch(game,/trader-signal|ios-simulator|head-mobile-platform/);
-assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,200);
+assert.equal((await call('/sasha-assets/voting.js',{cookie})).status,404);
+assert.equal((await call('/sasha-assets/voting.css',{cookie})).status,404);
+assert.doesNotMatch(game,/SashaVoting|sasha-assets\/voting\.|Оценить вопросы|Оценить все вопросы|Сохранить комментарий|startQuestions/);
+for(const query of ['?review=1','?results=1','?start=questions']){const redirect=await call('/'+query,{cookie});assert.equal(redirect.status,303);assert.equal(redirect.headers.get('Location'),origin+'/');}
 assert.match(game,/sasha-assets\/prank-intro.js/);
 const photo=await call('/sasha-assets/bormintseva.jpg',{cookie});assert.equal(photo.status,200);assert.equal(photo.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/bormintseva.jpg'));
 const screenshot=await call('/sasha-assets/hotels-not-banners.png',{cookie});assert.equal(screenshot.status,200);assert.equal(screenshot.headers.get('Content-Type'),'image/png');assert.deepEqual(Buffer.from(await screenshot.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/hotels-not-banners.png'));
 const appScreen=await call('/sasha-assets/app-home.jpg',{cookie});assert.equal(appScreen.status,200);assert.equal(appScreen.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await appScreen.arrayBuffer()),await fs.readFile('../sasha-game/sasha-assets/app-home.jpg'));
 const bannerCatalog={};vm.runInNewContext(await fs.readFile('../sasha-game/ad-art.js','utf8'),bannerCatalog);assert.equal(bannerCatalog.SashaAds.length,19);
 for(const {src} of bannerCatalog.SashaAds){assert.equal((await call(src)).status,401);const image=await call(src,{cookie});assert.equal(image.status,200);assert.equal(image.headers.get('Content-Type'),'image/jpeg');assert.deepEqual(Buffer.from(await image.arrayBuffer()),await fs.readFile('../sasha-game'+src));}
-const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.doesNotMatch(prank,/пиздабол/i);new vm.Script(prank);
+const prank=await(await call('/sasha-assets/prank-intro.js',{cookie})).text();assert.match(prank,/Идите нахуй со своими настолками/);assert.doesNotMatch(prank,/пиздабол|Шорткат|prank-shortcut|startQuestions|start.*questions/i);new vm.Script(prank);
 assert.equal((await call('/',{cookie:cookie+'bad'})).status,200);assert.match(await(await call('/',{cookie:cookie+'bad'})).text(),/id="login"/);
 const registry=JSON.parse(await fs.readFile('../sasha-game/registry.json','utf8'));const [question_id,revision]=Object.entries(registry)[0];const vote={campaign:'sasha-jokes-2026-11',question_id,revision,vote:1,comment:'Тест'};
-assert.equal((await call('/api/vote',{method:'POST',body:vote})).status,401);
-assert.equal((await call('/api/vote',{method:'POST',body:{...vote,revision:'stale'},cookie})).status,400);
-assert.equal((await call('/api/vote',{method:'POST',body:vote,cookie})).status,200);
-sql.prepare('UPDATE votes SET updated_at=?').run('2000-01-01T00:00:00.000Z');
-assert.equal((await call('/api/vote',{method:'POST',body:{...vote,vote:0},cookie})).status,200);assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM votes').get().n,1);assert.equal(sql.prepare('SELECT vote FROM votes').get().vote,0);
+sql.prepare('INSERT INTO votes (campaign,voter_id,question_id,revision,vote,name,comment,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?)').run(vote.campaign,voter,question_id,revision,1,'Архив','Сохранённый комментарий','2026-11-26T10:00:00Z','2026-11-26T10:00:00Z');
+assert.equal((await call('/api/vote',{method:'POST',body:vote})).status,410);
+assert.equal((await call('/api/vote',{method:'POST',body:{...vote,revision:'stale'},cookie})).status,410);
+assert.equal((await call('/api/vote',{method:'POST',body:{...vote,vote:0},cookie})).status,410);
+assert.equal((await call('/api/admin/clear-my-votes',{method:'POST',body:{},cookie,key:secrets.ADMIN_KEY})).status,410);
+assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM votes').get().n,1);assert.equal(sql.prepare('SELECT vote FROM votes').get().vote,1);assert.equal(sql.prepare('SELECT comment FROM votes').get().comment,'Сохранённый комментарий');
 assert.equal((await call('/api/admin/export',{cookie})).status,401);
 assert.equal((await call('/api/admin/export',{key:secrets.ADMIN_KEY})).status,401);
 assert.equal((await call('/api/admin/export',{key:secrets.ADMIN_KEY,cookie})).status,200);
+const archived=await(await call('/api/admin/export',{key:secrets.ADMIN_KEY,cookie})).json();assert.equal(archived.votes[0].comment,'Сохранённый комментарий');
 assert.match((await call('/api/logout',{method:'POST',body:{},cookie})).headers.get('set-cookie'),/Max-Age=0/);
 const scripts=[...game.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let reached=new Set(),endings=new Set();
